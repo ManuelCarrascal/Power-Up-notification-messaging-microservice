@@ -2,6 +2,8 @@ package com.pragma.powerup.infrastructure.input.rest;
 
 import com.pragma.powerup.application.dto.OrderReadyRequestDto;
 import com.pragma.powerup.application.handler.INotificationHandler;
+import com.pragma.powerup.infrastructure.utils.constants.openapi.OpenApiNotificationRestController;
+import com.pragma.powerup.infrastructure.utils.constants.openapi.ResponseCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,18 +18,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/notification")
-@Tag(name = "Notification Controller", description = "API for sending notifications to customers")
+@RequestMapping(OpenApiNotificationRestController.REQUEST_MAPPING_PATH)
+@Tag(name = OpenApiNotificationRestController.TAG_NAME,
+        description = OpenApiNotificationRestController.TAG_DESCRIPTION)
 public class NotificationRestController {
 
     private final INotificationHandler notificationHandler;
 
-    @Operation(summary = "Send order ready notification",
-            description = "Sends a notification with a PIN to the customer's phone when their order is ready")
+    @Operation(
+            summary = OpenApiNotificationRestController.OPERATION_SUMMARY,
+            description = OpenApiNotificationRestController.OPERATION_DESCRIPTION
+    )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Notification sent successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid request data", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_OK,
+                    description = OpenApiNotificationRestController.RESPONSE_200_DESCRIPTION),
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_BAD_REQUEST,
+                    description = OpenApiNotificationRestController.RESPONSE_400_DESCRIPTION,
+                    content = @Content),
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_INTERNAL_SERVER_ERROR,
+                    description = OpenApiNotificationRestController.RESPONSE_500_DESCRIPTION,
+                    content = @Content)
     })
     @PostMapping
     public ResponseEntity<Void> sendNotification(@RequestBody OrderReadyRequestDto orderReadyRequestDto) {

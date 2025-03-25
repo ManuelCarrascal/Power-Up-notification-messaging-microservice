@@ -1,5 +1,6 @@
 package com.pragma.powerup.application.dto;
 
+import com.pragma.powerup.application.utils.constants.openapi.OpenApiOrderReadyRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,12 +11,20 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "DTO for order notification request")
+@Schema(description = OpenApiOrderReadyRequestDto.DTO_DESCRIPTION)
 public class OrderReadyRequestDto {
 
-    @Schema(description = "ID of the order that is ready", example = "1234", required = true)
+    @Schema(
+            description = OpenApiOrderReadyRequestDto.ID_ORDER_DESCRIPTION,
+            example = OpenApiOrderReadyRequestDto.ID_ORDER_EXAMPLE,
+            required = true
+    )
     private Long idOrder;
 
-    @Schema(description = "Customer's phone number to send notification", example = "+573001234567", required = true)
+    @Schema(
+            description = OpenApiOrderReadyRequestDto.PHONE_DESCRIPTION,
+            example = OpenApiOrderReadyRequestDto.PHONE_EXAMPLE,
+            required = true
+    )
     private String phone;
 }
