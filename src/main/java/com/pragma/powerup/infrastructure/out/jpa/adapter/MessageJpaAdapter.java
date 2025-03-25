@@ -8,7 +8,6 @@ import com.twilio.type.PhoneNumber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.Random;
 
 @RequiredArgsConstructor
 public class MessageJpaAdapter implements IMessagePersistencePort {
@@ -25,13 +24,6 @@ public class MessageJpaAdapter implements IMessagePersistencePort {
                         new PhoneNumber(twilioPhoneNumber),
                         messageContent)
                 .create();
-    }
-
-    @Override
-    public String generatePin() {
-        Random random = new Random();
-        int pin = 100000 + random.nextInt(900000); // 6-digit pin
-        return String.valueOf(pin);
     }
 
     @Override
