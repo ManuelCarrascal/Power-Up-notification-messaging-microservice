@@ -46,16 +46,58 @@ public class NotificationRestController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(
+            summary = OpenApiNotificationRestController.EXISTS_PIN_OPERATION_SUMMARY,
+            description = OpenApiNotificationRestController.EXISTS_PIN_OPERATION_DESCRIPTION
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_OK,
+                    description = OpenApiNotificationRestController.EXISTS_PIN_RESPONSE_200_DESCRIPTION),
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_BAD_REQUEST,
+                    description = OpenApiNotificationRestController.EXISTS_PIN_RESPONSE_400_DESCRIPTION,
+                    content = @Content),
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_INTERNAL_SERVER_ERROR,
+                    description = OpenApiNotificationRestController.RESPONSE_500_DESCRIPTION,
+                    content = @Content)
+    })
     @PostMapping("/exists-pin")
     public ResponseEntity<Boolean> existsPinByPhoneNumber(@RequestBody String phoneNumber) {
         return ResponseEntity.ok(notificationHandler.existsPinByPhoneNumber(phoneNumber));
     }
 
+    @Operation(
+            summary = OpenApiNotificationRestController.FIND_PIN_OPERATION_SUMMARY,
+            description = OpenApiNotificationRestController.FIND_PIN_OPERATION_DESCRIPTION
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_OK,
+                    description = OpenApiNotificationRestController.FIND_PIN_RESPONSE_200_DESCRIPTION),
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_BAD_REQUEST,
+                    description = OpenApiNotificationRestController.FIND_PIN_RESPONSE_400_DESCRIPTION,
+                    content = @Content),
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_INTERNAL_SERVER_ERROR,
+                    description = OpenApiNotificationRestController.RESPONSE_500_DESCRIPTION,
+                    content = @Content)
+    })
     @PostMapping("/find-pin")
     public ResponseEntity<String> findPinByPhoneNumber(@RequestBody String phoneNumber) {
         return ResponseEntity.ok(notificationHandler.findPinByPhoneNumber(phoneNumber));
     }
 
+    @Operation(
+            summary = OpenApiNotificationRestController.DELIVER_ORDER_OPERATION_SUMMARY,
+            description = OpenApiNotificationRestController.DELIVER_ORDER_OPERATION_DESCRIPTION
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_OK,
+                    description = OpenApiNotificationRestController.DELIVER_ORDER_RESPONSE_200_DESCRIPTION),
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_BAD_REQUEST,
+                    description = OpenApiNotificationRestController.DELIVER_ORDER_RESPONSE_400_DESCRIPTION,
+                    content = @Content),
+            @ApiResponse(responseCode = ResponseCodes.RESPONSE_CODE_INTERNAL_SERVER_ERROR,
+                    description = OpenApiNotificationRestController.RESPONSE_500_DESCRIPTION,
+                    content = @Content)
+    })
     @PostMapping("/deliver-order")
     public ResponseEntity<Void> deliverOrder(@RequestBody DeliverOrderRequestDto deliverOrderRequestDto) {
         notificationHandler.deliverOrder(deliverOrderRequestDto);

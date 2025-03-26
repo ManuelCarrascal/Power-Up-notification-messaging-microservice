@@ -42,11 +42,11 @@ public class NotificationUseCase implements INotificationServicePort {
         String storedPin = notificationPersistencePort.findPinByPhoneNumber(phoneNumber);
 
         if (storedPin == null) {
-            throw new IllegalArgumentException("No se encontró un PIN asociado a este número telefónico");
+            throw new IllegalArgumentException(NotificationUseCaseConstants.PIN_NOT_FOUND_MESSAGE);
         }
 
         if (!storedPin.equals(pin)) {
-            throw new IllegalArgumentException("El PIN ingresado es incorrecto");
+            throw new IllegalArgumentException(NotificationUseCaseConstants.INVALID_PIN_MESSAGE);
         }
     }
 
