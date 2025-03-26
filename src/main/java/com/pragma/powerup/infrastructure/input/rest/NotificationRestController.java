@@ -1,5 +1,6 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
+import com.pragma.powerup.application.dto.DeliverOrderRequestDto;
 import com.pragma.powerup.application.dto.OrderReadyRequestDto;
 import com.pragma.powerup.application.handler.INotificationHandler;
 import com.pragma.powerup.infrastructure.utils.constants.openapi.OpenApiNotificationRestController;
@@ -42,6 +43,22 @@ public class NotificationRestController {
     @PostMapping
     public ResponseEntity<Void> sendNotification(@RequestBody OrderReadyRequestDto orderReadyRequestDto) {
         notificationHandler.sendNotification(orderReadyRequestDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/exists-pin")
+    public ResponseEntity<Boolean> existsPinByPhoneNumber(@RequestBody String phoneNumber) {
+        return ResponseEntity.ok(notificationHandler.existsPinByPhoneNumber(phoneNumber));
+    }
+
+    @PostMapping("/find-pin")
+    public ResponseEntity<String> findPinByPhoneNumber(@RequestBody String phoneNumber) {
+        return ResponseEntity.ok(notificationHandler.findPinByPhoneNumber(phoneNumber));
+    }
+
+    @PostMapping("/deliver-order")
+    public ResponseEntity<Void> deliverOrder(@RequestBody DeliverOrderRequestDto deliverOrderRequestDto) {
+        notificationHandler.deliverOrder(deliverOrderRequestDto);
         return ResponseEntity.ok().build();
     }
 }

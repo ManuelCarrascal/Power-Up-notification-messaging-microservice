@@ -2,16 +2,19 @@ package com.pragma.powerup.domain.usecase;
 
 import com.pragma.powerup.domain.api.INotificationServicePort;
 import com.pragma.powerup.domain.spi.IMessagePersistencePort;
+import com.pragma.powerup.domain.spi.INotificationPersistencePort;
 import com.pragma.powerup.domain.utils.constants.NotificationUseCaseConstants;
 
 import java.util.Random;
 
 public class NotificationUseCase implements INotificationServicePort {
     private final IMessagePersistencePort messagePersistencePort;
+    private final INotificationPersistencePort notificationPersistencePort;
     private final Random random = new Random();
 
-    public NotificationUseCase(IMessagePersistencePort messagePersistencePort) {
+    public NotificationUseCase(IMessagePersistencePort messagePersistencePort, INotificationPersistencePort notificationPersistencePort) {
         this.messagePersistencePort = messagePersistencePort;
+        this.notificationPersistencePort = notificationPersistencePort;
     }
 
     @Override
@@ -22,6 +25,29 @@ public class NotificationUseCase implements INotificationServicePort {
 
         messagePersistencePort.saveNotificationPin(phone, pin);
         messagePersistencePort.sendSmsMessage(phone, message);
+    }
+
+    @Override
+    public Boolean existPinByPhoneNumber(String phone) {
+        return notificationPersistencePort.findPinByPhoneNumber(phone) != null;
+    }
+
+    @Override
+    public String findPinByPhoneNumber(String phone) {
+        return notificationPersistencePort.findPinByPhoneNumber(phone);
+    }
+
+    @Override
+    public void deliverOrder(Long idOrder, String phoneNumber, String pin) {
+        String storedPin = notificationPersistencePort.findPinByPhoneNumber(phoneNumber);
+
+        if (storedPin == null) {
+            throw new IllegalArgumentException("No se encontró un PIN asociado a este número telefónico");
+        }
+
+        if (!storedPin.equals(pin)) {
+            throw new IllegalArgumentException("El PIN ingresado es incorrecto");
+        }
     }
 
     private String generatePin() {
